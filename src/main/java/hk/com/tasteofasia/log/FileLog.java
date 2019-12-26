@@ -22,6 +22,7 @@ public class FileLog {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("Change to console log");
 		}
 
 		return null;

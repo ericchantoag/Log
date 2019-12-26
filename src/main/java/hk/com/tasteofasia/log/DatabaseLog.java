@@ -1,6 +1,7 @@
 package hk.com.tasteofasia.log;
 
 import java.io.PrintStream;
+import java.sql.SQLException;
 
 public class DatabaseLog {
 	private static String host;
@@ -11,7 +12,7 @@ public class DatabaseLog {
 	
 	private static String tableName;
 	private static String columnName;
-	private static DatabasePrintStream dbStream;
+	private static PrintStream dbStream;
 	
 	public static void initDbConfig(String host, String port, String dbName, String username, String password, String tableName, String columnName) {
 		DatabaseLog.host = host;
@@ -35,8 +36,14 @@ public class DatabaseLog {
 			throw new UnsupportedOperationException("must call initDbConfig before getOutputStream");
 		}
 		
-		if (DatabaseLog.dbStream == null) {
-			DatabaseLog.dbStream = new DatabasePrintStream(host, port, dbName, username, password, tableName, columnName);
+		try {
+			if (DatabaseLog.dbStream == null || !(DatabaseLog.dbStream instanceof DatabasePrintStream)) {
+				DatabaseLog.dbStream = new DatabasePrintStream(host, port, dbName, username, password, tableName, columnName);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+			System.out.println("Change to file log");
+			DatabaseLog.dbStream = FileLog.getOutputStream();
 		}
 		return DatabaseLog.dbStream;
 	}

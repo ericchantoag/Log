@@ -11,7 +11,7 @@ public class DatabasePrintStream extends PrintStream {
 	private String tableName;
 	private String logColumn;
 
-	public DatabasePrintStream(String host, String port, String dbName, String username, String password, String tableName, String columnName) {
+	public DatabasePrintStream(String host, String port, String dbName, String username, String password, String tableName, String columnName) throws SQLException {
 		super(FileLog.getOutputStream());
 		this.tableName = tableName;
 		this.logColumn = columnName;
@@ -22,8 +22,6 @@ public class DatabasePrintStream extends PrintStream {
 			this.connection = DriverManager.getConnection(connUrl, username, password);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 	}
 	
@@ -33,6 +31,8 @@ public class DatabasePrintStream extends PrintStream {
 			stmt.execute(String.format("INSERT INTO %s(%s) VALUES (\'%s\')", this.tableName, this.logColumn, log));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("Change to file log");
+			System.setOut(FileLog.getOutputStream());
 		}
 	}
 

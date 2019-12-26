@@ -5,7 +5,7 @@ public class App {
 	public static void main(String[] args) {
 		System.out.println("Hello World Console");
 		System.out.println("Hello World Console 2");
-		DatabaseLog.initDbConfig("localhost\\SQLExpress", "1433", "LogTest", "log", "12345678", "DatabaseLog", "log");
+		DatabaseLog.initDbConfig("localhost\\SQLExpress", "1433", "Test", "test", "12345678", "TestLog", "log");
 		System.setOut(DatabaseLog.getOutputStream());
 		System.out.println("Hello World Database");
 		System.out.println("Hello World Database 2");
